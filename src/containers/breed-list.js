@@ -53,7 +53,7 @@ class BreedList extends Component {
 
     render() {
         return (
-            <div className="d-flex flex-column m-2 justify-content-around">
+            <div className="d-flex flex-column m-2 justify-content-around h-100">
                 <ListBreeds
                     breeds={this.listOfBreeds} 
                     selectBreed = {this.selectBreed}/>
