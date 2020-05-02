@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import BreedGrid from '../components/breeds-grid';
 import ListBreeds from '../components/dropdown-breeds';
 import Pet from '../components/display-pet';
+import Placeholder from '../DogPlaceholder.svg'
 
 class BreedList extends Component {
     listOfBreeds = [
@@ -16,12 +17,22 @@ class BreedList extends Component {
         super();
         this.state = {
             dogs: [],
-            selectedPet: ''
+            selectedPet: Placeholder,
         };
     }
 
     componentDidMount() {
         this.selectBreed(this.listOfBreeds[0]);
+    }
+
+    selectRandomPet = (breed) => {
+        return fetch(`https://dog.ceo/api/breed/${breed}/images/random`)
+            .then((data) => data.json())
+            .then(data => {
+                this.setState({
+                    selectedPet: data.message,
+                })
+            });
     }
 
     selectBreed = (breed) => {
@@ -30,9 +41,8 @@ class BreedList extends Component {
             .then(data => {
                 this.setState({
                     dogs: data.message,
-                    selectedPet: data.message[0],
                 })
-            });
+            }).then(this.selectRandomPet(breed))
     }
 
     selectPet = (pet) => {
@@ -43,7 +53,7 @@ class BreedList extends Component {
 
     render() {
         return (
-            <div className="d-flex flex-column m-2">
+            <div className="d-flex flex-column m-2 justify-content-around">
                 <ListBreeds
                     breeds={this.listOfBreeds} 
                     selectBreed = {this.selectBreed}/>
